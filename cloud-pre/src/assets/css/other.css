@@ -1,0 +1,28 @@
+.ivu-anchor div{
+    margin: 10px!important;
+}
+.ivu-anchor-ink {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: -10px!important;
+}
+.ivu-anchor-link {
+    padding: 0!important;
+    line-height: 1.2;
+    font-size: 10px;
+}
+.ivu-anchor-wrapper {
+     overflow: unset;
+    padding-left: 4px;
+    margin-left: -4px;
+}
+.ivu-tag-size-large {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 30px;
+    border-radius: 100px;
+    background:#515a6e;
+    color:#fff;
+    margin: 2px;
+}
