@@ -3,7 +3,10 @@
         <Layout>
             <!--顶部内容-->
             <Header class="layout-header">
-                <router-link to="/" class="layout-logo"/>
+                <div class="layout-dh">
+                    <Icon @click="rangShow" size="25" color="#f6ca9d" type="md-menu" />
+                </div>
+                <div class="layout-logo"/>
                 <div class="layout-nav">
                     <menu-item name="1">
                         <Icon type="ios-navigate"></Icon>
@@ -32,44 +35,44 @@
             <!--中部内容-->
             <Layout :style="{padding: '64px 0px 0px 0px'}">
                 <!--左侧列表-->
-                <div :style="{position: 'fixed',height: '100vh',overflowX:'hidden',width:'200px'}">
-                    <div :style="{background: '#1d1e23',height: '93vh',overflowY:'scroll',width:'210px'}">
-                        <Menu :style="{height: 'inherit',color:' #ffffffb3'}" :active-name="active" theme="dark"
-                              width="auto" :open-names="['3-0']">
-                            <div style="padding-left: 10px;padding-bottom: 0;" class="ivu-menu-item">
-                                <menu-item :to="item.route" v-for="(item,index) in slider" :key="'1-' + index"
-                                           :name="'1-' + index">
-                                    <Icon :type="item.icon"></Icon>
-                                    <span>{{item.name}}</span>
+<!--                <div class="chouti" >-->
+                <Drawer class-name="chouti" :transfer="false" :inner="true" :scrollable="true" width="200"  placement="left" :closable="false" v-model="dhShow">
+                    <Menu @on-select="rangShow" :style="{height: 'inherit',color:' #515a6e'}" :active-name="active" theme="light"
+                          width="auto" :open-names="['3-0']">
+                        <div style="padding-bottom: 0;" >
+                            <menu-item style="padding-right: 72px;" :to="item.routeUrl" v-for="(item,index) in slider" :key="'1-' + index"
+                                       :name="'1-' + index">
+                                <Icon :type="item.routeIcon"></Icon>
+                                <span>{{item.categoryName}}</span>
+                            </menu-item>
+                        </div>
+                        <submenu v-for="(item,index) in subSlider" :key="'2-' + index" :name="'2-' + index">
+                            <template slot="title">
+                                <span> <Icon :type="item[0]"></Icon></span>
+                                <span>{{item[1]}}</span>
+                            </template>
+                            <MenuGroup v-for="(each,key) in item[2]" :key="key" :title="key">
+                                <menu-item :to="eachsub.routeUrl" v-for="(eachsub,keysub) in each" :key="keysub"
+                                           :name="eachsub.categoryName">
+                                    {{eachsub.categoryName}}
                                 </menu-item>
-                            </div>
-                            <submenu v-for="(item,index) in subSlider" :key="'2-' + index" :name="'2-' + index">
-                                <template slot="title">
-                                    <Icon :type="item.icon"></Icon>
-                                    <span>{{item.title}}</span>
-                                </template>
-                                <MenuGroup v-for="(each,key) in item.group" :key="key" :title="each.title">
-                                    <menu-item :to="eachsub.route" v-for="(eachsub,keysub) in each.sub" :key="keysub"
-                                               :name="eachsub.name">
-                                        {{eachsub.name}}
-                                    </menu-item>
-                                </MenuGroup>
-                            </submenu>
-                            <submenu v-for="(item,index) in normalSlider" :key="'3-' + index" :name="'3-' + index">
-                                <template slot="title">
-                                    <Icon :type="item.icon"></Icon>
-                                    <span>{{item.title}}</span>
-                                </template>
-                                <menu-item :to="each1.route" v-for="(each1,key1) in item.sub" :key="key1"
-                                           :name="each1.name">
-                                    {{each1.name}}
-                                </menu-item>
-                            </submenu>
-                        </Menu>
-                    </div>
-                </div>
+                            </MenuGroup>
+                        </submenu>
+                        <submenu v-for="(item,index) in normalSlider" :key="'3-' + index" :name="'3-' + index">
+                            <template slot="title">
+                                <Icon :type="item[2]"></Icon>
+                                <span>{{item[0]}}</span>
+                            </template>
+                            <menu-item :to="each1.routeUrl" v-for="(each1,key1) in item[1]" :key="key1"
+                                       :name="each1.categoryName">
+                                {{each1.categoryName}}
+                            </menu-item>
+                        </submenu>
+                    </Menu>
+                </Drawer>
+<!--                </div>-->
                 <!--右侧内容-->
-                <Layout :style="{padding: '25px 20px 20px 230px',minHeight: '87vh',maxWidth: '100vw'}">
+                <Layout :style="{padding: '25px',minHeight: '87vh',maxWidth: '100vw'}">
                     <router-view/>
                     <BackTop></BackTop>
                 </Layout>
@@ -94,118 +97,56 @@
 <script>
     export default {
         name: "Layout-home",
-        methods: {},
+        created:function(){
+            this.init()
+        },
+        methods: {
+            /*初始化左侧列表*/
+            init() {
+                this.$http.get('/stage/cate?userName=TEST').then(res => {
+                    var slider = res.data.data
+                    if (res.data.code === 0) {
+                        let entry = Object.entries(slider)
+                        entry.forEach((item) => {
+                            if (item[0] === '单个') {
+                                this.slider = item[1]
+                            } else if (item[1].length > 1) {
+                                //normalSlider
+                                this.normalSlider.unshift(item)
+                                this.normalSlider.forEach((x) => {
+                                    x[1].forEach((x1,index) => {
+                                        if (typeof x1 === 'string') {
+                                            x[1].splice(index,1)
+                                            x.push(x1)
+                                        }
+                                    })
+                                })
+                            } else {
+                                //subSlider
+                                this.subSlider.unshift(item)
+                                this.subSlider[0].unshift(this.subSlider[0][1]["icon"])
+                                delete this.subSlider[0][2].icon
+                            }
+                        })
+                    }
+
+                })
+            },
+            rangShow:function () {
+                if(this.dhShow === true) {
+                    this.dhShow = false
+                } else {
+                    this.dhShow = true
+                }
+            }
+        },
         data() {
             return {
+                dhShow:sessionStorage.setItem("dh",false),
                 active: '1-2',
-                slider: [
-                    {
-                        route: '/intro',
-                        icon: 'md-information-circle',
-                        name: '介绍'
-                    },
-                    {
-                        route: '/intro',
-                        icon: 'ios-build',
-                        name: '安装'
-                    },
-
-                ],
-                subSlider: [
-                    {
-                        icon: 'ios-notifications',
-                        title: '技术架构',
-                        group: [
-                            {
-                                title: 'NACOS',
-                                sub: [
-                                    {
-                                        route: '/intro',
-                                        name: 'NACOS搭建'
-                                    },
-                                    {
-                                        route: '/intro',
-                                        name: 'NACOS集群搭建'
-                                    },
-                                    {
-                                        route: '/intro',
-                                        name: 'Seata分布式事务'
-                                    },
-                                    {
-                                        route: '/intro',
-                                        name: 'Gateway路由网关'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                normalSlider: [
-                    {
-                        icon: 'ios-checkbox',
-                        title: '常见问题',
-                        sub: [
-                            {
-                                route: '/question',
-                                name: '文件相关'
-                            },
-                            {
-                                route: '/question',
-                                name: '其他'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'ios-cog',
-                        title: '系统设置',
-                        sub: [
-                            {
-                                route: '/intro',
-                                name: '修改密码'
-                            },
-                            {
-                                route: '/intro',
-                                name: '重新拉取'
-                            },
-                            {
-                                route: '/intro',
-                                name: '个人信息'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'md-information-circle',
-                        title: '安全设置',
-                        sub: [
-                            {
-                                route: '/intro',
-                                name: '网络配置'
-                            },
-                            {
-                                route: '/intro',
-                                name: '路由信息'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'md-grid',
-                        title: '通用设置',
-                        sub: [
-                            {
-                                route: '/intro',
-                                name: '用户管理'
-                            },
-                            {
-                                route: '/intro',
-                                name: '权限管理'
-                            },
-                            {
-                                route: '/intro',
-                                name: '其他管理'
-                            }
-                        ]
-                    }
-                ]
+                slider: [],
+                subSlider: [],
+                normalSlider: []
             }
         }
     }
@@ -233,8 +174,8 @@
     .layout-header {
         position: fixed;
         width: 100%;
-        background: linear-gradient(90deg, #1d1e23, #3f4045);;
-        z-index: 999;
+        background: linear-gradient(to right, #141e30, #243b55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        z-index: 1999;
     }
 
     .layout-logo {
@@ -245,6 +186,12 @@
         border-radius: 3px;
         float: left;
         margin-left: 2vw;
+    }
+
+    .layout-dh {
+        margin: 0 20px 0 20px;
+        float: left;
+        color: #f6ca9d;
     }
 
     .layout-nav {

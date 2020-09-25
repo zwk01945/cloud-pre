@@ -1,8 +1,8 @@
 <template>
-    <div :style="{padding: '0px', minHeight: '100vh',marginRight:'180px', background: '#f5f7f9'}">
-            <div  class="layout-category">
+    <div :style="{padding: '0px',display:'flex',flexDirection:'row', minHeight: '100vh',marginRight:'180px', background: '#f5f7f9'}">
+            <Card  class="layout-category">
                 <h2 >三级标题:</h2>
-                <div id="sub_title" style="display: flex;flex-wrap: wrap;width: 70vw">
+                <div id="sub_title" style="display: flex;flex-wrap: wrap;width: 10vw">
                     <Button class="ivu-tag-size-large"  @click="getInfo()" shape="circle" >MVC文件上传</Button>
                     <Button class="ivu-tag-size-large" @click="getInfo()"  shape="circle" >MVC文件上传</Button>
                     <Button class="ivu-tag-size-large" @click="getInfo()"  shape="circle" >MVC文件上传</Button>
@@ -14,7 +14,7 @@
                     <Button class="ivu-tag-size-large"  shape="circle" >MVC文件上传</Button>
                     <Button class="ivu-tag-size-large"  shape="circle" >MVC文件上传</Button>
                 </div>
-            </div>
+            </Card>
         <Card class="layout-quest">
             <div class="layout-quest-title">
                 <h1>MVC文件上传</h1>
@@ -103,7 +103,7 @@
 
 <style scoped>
     .layout-category{
-        margin: 35px 0;
+        /*margin: 35px 0;*/
         display: flex;
         flex-direction: row;
     }
@@ -114,7 +114,7 @@
         display: flex;
         flex-direction: column;
         align-items: start;
-        width: inherit;
+        width: 100%;
         padding: 20px;
     }
     .layout-quest-title{
