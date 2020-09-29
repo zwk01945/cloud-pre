@@ -26,3 +26,20 @@
     color:#fff;
     margin: 2px;
 }
+.ivu-list-item-meta-content {
+    flex: 0.3 0;
+}
+.ivu-avatar {
+    width: 52px;
+    height: 52px;
+}
+.ivu-card-body{
+    width: inherit;
+}
+.el-calendar-table .el-calendar-day {
+    height: 62px!important;
+}
+.el-calendar {
+    width: 35%;
+    background-color: #fff;
+}

@@ -27,18 +27,32 @@ const routers = [
                 // Layout-home.vue
             },
             {
-                path: '/intro',
+                path: 'intro',
                 meta: {
                     title: '介绍'
                 },
                 component: (resolve) => require(['../view/ProjectIntro.vue'], resolve)
             },
             {
-                path: '/question',
+                path: 'install',
+                meta: {
+                    title: '安装'
+                },
+                component: (resolve) => require(['../view/ProjectInstall.vue'], resolve)
+            },
+            {
+                path: 'question',
                 meta: {
                     title: '文件相关'
                 },
                 component: (resolve) => require(['../view/question/QuestionFileVIew.vue'], resolve)
+            },
+            {
+                path: 'build',
+                meta: {
+                    title: '文件相关'
+                },
+                component: (resolve) => require(['../view/build/ProjectFreamWork.vue'], resolve)
             }
         ],
         component: (resolve) => require(['../components/Layout-home.vue'], resolve)

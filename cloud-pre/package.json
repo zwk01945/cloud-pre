@@ -20,7 +20,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.5.1"
   },
   "eslintConfig": {
     "root": true,
@@ -35,7 +36,12 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
+      "vue/no-parsing-error": [
+        2,
+        {
+          "x-invalid-end-tag": false
+        }
+      ]
     }
   },
   "browserslist": [

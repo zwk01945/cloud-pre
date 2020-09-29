@@ -1,22 +1,22 @@
 <template>
     <div id="particles" class="layout-login">
         <div class="layout-form">
-            <img src="../assets/image/logo.png">
-            <Form ref="formInline" :model="formInline" :rules="ruleInline">
-                <FormItem prop="user">
-                    <Input type="text" v-model="formInline.userName" placeholder="Username">
-                        <Icon type="ios-person-outline" slot="prepend"></Icon>
-                    </Input>
-                </FormItem>
-                <FormItem prop="password">
-                    <Input type="password" v-model="formInline.userPassword" placeholder="Password">
-                    <Icon type="ios-lock-outline" slot="prepend"></Icon>
-                    </Input>
-                </FormItem>
-                <FormItem>
-                    <Button ghost type="primary" @click="handleSubmit('formInline')">Signin</Button>
-                </FormItem>
-            </Form>
+            <img src="../assets/image/logo.png"/>
+                <Form ref="formInline" :model="formInline" :rules="ruleInline">
+                    <FormItem prop="user">
+                        <Input type="text" v-model="formInline.userName" placeholder="Username">
+                            <Icon type="ios-person-outline" slot="prepend"></Icon>
+                        </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                        <Input type="password" v-model="formInline.userPassword" placeholder="Password">
+                            <Icon type="ios-lock-outline" slot="prepend"></Icon>
+                        </Input>
+                    </FormItem>
+                    <FormItem>
+                        <Button ghost type="primary" @click="handleSubmit('formInline')">Signin</Button>
+                    </FormItem>
+                </Form>
         </div>
     </div>
 </template>
@@ -62,6 +62,7 @@
                     if (valid) {
                         this.$http.post('/stage/login',this.formInline).then(res => {
                             if (res.data.code === 0) {
+                                this.$store.commit('userinfo',res.data.data)
                                 this.$Message.success('Success!');
                                 this.$router.push('/home/welcome')
                             } else {
@@ -189,8 +190,10 @@
 }
     .layout-form{
         width: 15vw;
-        height: 30vh;
+        height: 60vh;
         position: fixed;
         top: 20vh;
+        background: bottom;
+        border: 1px red;
     }
 </style>

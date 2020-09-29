@@ -6,8 +6,8 @@ import axios from 'axios';
 
 // axios默认配置
 axios.defaults.timeout = 10000;   // 超时时间
-axios.defaults.baseURL = 'http://localhost:9011/';  // 默认地址
-
+axios.defaults.baseURL = 'http://192.168.2.157:9011/';
+// 默认地址
 //整理数据
 axios.defaults.transformRequest = function (data) {
     data = JSON.stringify(data);
@@ -20,6 +20,7 @@ axios.interceptors.request.use(
     config => {
         //config.data = JSON.stringify(config.data);
         config.headers['Content-Type'] = 'application/json;charset=UTF-8';
+        // config.headers['Access-Control-Allow-Origin'] = '*';
         //判断是否存在ticket，如果存在的话，则每个http header都加上ticket
         // if (cookie.get("token")) {
         //     //用户每次操作，都将cookie设置成2小时
